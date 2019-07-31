@@ -77,7 +77,7 @@ class ItemDAOTest {
   }
 
   private void testFindItemByPriceBetween(Item createdItem) {
-    List<Item> checkedItems = ItemDAO.findByItemPriceBetween(createdItem.getPrice() - 100, createdItem.getPrice() + 100);
+    List<Item> checkedItems = ItemDAO.findByItemPriceBetween(TEST_NEW_PRICE - 100, TEST_NEW_PRICE + 100);
     assertNotNull(checkedItems);
 
     Item checkedItem = null;
@@ -89,7 +89,7 @@ class ItemDAOTest {
 
     assertNotNull(checkedItem, "Item not found by price, but should");
 
-    checkedItems = ItemDAO.findByItemPriceBetween(createdItem.getPrice() + 100, createdItem.getPrice() + 200);
+    checkedItems = ItemDAO.findByItemPriceBetween(TEST_NEW_PRICE + 100, TEST_NEW_PRICE + 200);
     assertNotNull(checkedItem);
 
     checkedItem = null;
@@ -99,7 +99,7 @@ class ItemDAOTest {
       }
     }
 
-    assertNotNull(checkedItem, "Item found by price, but should not");
+    assertNull(checkedItem, "Item found by price, but should not");
   }
 
   private void testFindAll() {
