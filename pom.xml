@@ -42,7 +42,7 @@
       <version>${lombok.version}</version>
       <scope>provided</scope>
     </dependency>
-<!--    postgers-->
+<!--    postgresSqlDriver-->
     <dependency>
       <groupId>postgresql</groupId>
       <artifactId>postgresql</artifactId>

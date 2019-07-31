@@ -30,55 +30,61 @@ class UserDAOTest {
 
   @Test
   void testCreateFindAndDelete() {
-    // checking update
+    // test create
     assertNull(users.get(0).getId());
     User createdUser = UserDAO.create(users.get(0));
     assertNotNull(createdUser);
     assertNotNull(createdUser.getId());
 
-    // checking findById
+    // test findById
     User checkedUser = UserDAO.findById(createdUser.getId());
     assertNotNull(checkedUser);
     assertNotNull(checkedUser.getId());
 
-    // checking update
+    // another tests
+    testUpdate(checkedUser);
+    testFindUserByLogin(createdUser);
+    testFindAll();
+    testDelete(createdUser, checkedUser);
+  }
+
+  private void testUpdate(User checkedUser) {
     checkedUser.setPassword("new_password");
     checkedUser = UserDAO.update(checkedUser);
 
-    assertNotNull(checkedUser);
-    assertEquals("new_password", checkedUser.getPassword());
-
     User checkedUserFromDB = UserDAO.findById(checkedUser.getId());
-    assertNotNull(checkedUser);
-    assertEquals("new_password", checkedUser.getPassword());
+    assertNotNull(checkedUserFromDB);
+    assertEquals("new_password", checkedUserFromDB.getPassword());
+  }
 
-    // checking findByLogin
+  private void testFindUserByLogin(User createdUser) {
     List<User> checkedUsers = UserDAO.findByLogin(TEST_USER_LOGIN);
-    assertNotNull(checkedUser);
-    assertEquals(true, checkedUsers.size() >= 1);
+    assertNotNull(checkedUsers);
 
-    checkedUser = null;
+    User checkedUser = null;
     for (int i = 0; i < checkedUsers.size(); i++) {
       if (checkedUsers.get(i).getId() == createdUser.getId()) {
         checkedUser = checkedUsers.get(i);
       }
     }
 
-    assertNotNull(checkedUser);
+    assertNotNull(checkedUser, "User not found by login");
+  }
 
-    // checking findAll
-    checkedUsers = UserDAO.findAll();
+  private void testFindAll() {
+    List<User> checkedUsers = UserDAO.findAll();
 
     assertNotNull(checkedUsers);
     assertEquals(true, checkedUsers.size() > 0);
     for (User user: checkedUsers) {
-      assertNotNull(user, "All users collection has null objects");
+      assertNotNull(user, "All_Users collection has null objects");
     }
+  }
 
-    // checking delete
+  private void testDelete(User createdUser, User checkedUser) {
     UserDAO.delete(checkedUser);
 
     User deletedUser = UserDAO.findById(createdUser.getId());
-    assertNull(deletedUser);
+    assertNull(deletedUser, "User delete failed");
   }
 }

@@ -13,13 +13,13 @@ public class User {
   private Integer id;
   private String login;
   private String password;
-  private String firtsName;
+  private String firstName;
   private String secondName;
 
-  public User(String login, String password, String firtsName, String secondName) {
+  public User(String login, String password, String firstName, String secondName) {
     this.login = login;
     this.password = password;
-    this.firtsName = firtsName;
+    this.firstName = firstName;
     this.secondName = secondName;
   }
 }

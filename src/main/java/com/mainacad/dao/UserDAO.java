@@ -19,7 +19,7 @@ public class UserDAO {
 
       preparedStatement.setString(1, user.getLogin());
       preparedStatement.setString(2, user.getPassword());
-      preparedStatement.setString(3, user.getFirtsName());
+      preparedStatement.setString(3, user.getFirstName());
       preparedStatement.setString(4, user.getSecondName());
 
       preparedStatement.executeUpdate();
@@ -47,9 +47,11 @@ public class UserDAO {
 
       preparedStatement.setString(1, user.getLogin());
       preparedStatement.setString(2, user.getPassword());
-      preparedStatement.setString(3, user.getFirtsName());
+      preparedStatement.setString(3, user.getFirstName());
       preparedStatement.setString(4, user.getSecondName());
       preparedStatement.setInt(5, user.getId());
+
+      preparedStatement.executeUpdate();
 
       return user;
 
@@ -147,7 +149,7 @@ public class UserDAO {
     user.setId(resultSet.getInt("id"));
     user.setLogin(resultSet.getString("login"));
     user.setPassword(resultSet.getString("password"));
-    user.setFirtsName(resultSet.getString("first_name"));
+    user.setFirstName(resultSet.getString("first_name"));
     user.setSecondName(resultSet.getString("second_name"));
 
     return user;
