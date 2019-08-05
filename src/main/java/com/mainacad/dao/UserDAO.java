@@ -5,8 +5,11 @@ import com.mainacad.model.User;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class UserDAO {
+  private static Logger logger = Logger.getLogger(OrderDAO.class.getName());
+
   public static User create(User user){
     String statement = "INSERT INTO users(login, password, first_name, second_name)" +
             "VALUES(?,?,?,?)";

@@ -5,8 +5,11 @@ import com.mainacad.model.Item;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class ItemDAO {
+  private static Logger logger = Logger.getLogger(OrderDAO.class.getName());
+
   public static Item create(Item item) {
     String statement = "INSERT INTO items(item_code, name, price)" +
             "VALUES(?,?,?)";
@@ -32,7 +35,7 @@ public class ItemDAO {
       }
 
     } catch (SQLException e) {
-      e.printStackTrace();
+      logger.severe(e.getMessage());
     }
 
     return null;
@@ -54,7 +57,7 @@ public class ItemDAO {
       return item;
 
     } catch (SQLException e) {
-      e.printStackTrace();
+      logger.severe(e.getMessage());
     }
     return null;
   }
@@ -76,7 +79,7 @@ public class ItemDAO {
       }
 
     } catch (SQLException e) {
-      e.printStackTrace();
+      logger.severe(e.getMessage());
     }
     return null;
   }
@@ -98,7 +101,7 @@ public class ItemDAO {
       }
 
     } catch (SQLException e) {
-      e.printStackTrace();
+      logger.severe(e.getMessage());
     }
 
     return items;
@@ -122,7 +125,7 @@ public class ItemDAO {
       }
 
     } catch (SQLException e) {
-      e.printStackTrace();
+      logger.severe(e.getMessage());
     }
 
     return items;
@@ -143,7 +146,7 @@ public class ItemDAO {
       }
 
     } catch (SQLException e) {
-      e.printStackTrace();
+      logger.severe(e.getMessage());
     }
 
     return items;
@@ -159,7 +162,7 @@ public class ItemDAO {
       preparedStatement.executeUpdate();
 
     } catch (SQLException e) {
-      e.printStackTrace();
+      logger.severe(e.getMessage());
     }
   }
 
