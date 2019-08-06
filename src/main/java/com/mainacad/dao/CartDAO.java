@@ -88,7 +88,7 @@ public class CartDAO {
   public static List<Cart> findByUser(Integer userId) {
     List<Cart> cartList = new ArrayList<>();
 
-    String statement = "SELECT * FROM carts AND user_id=?";
+    String statement = "SELECT * FROM carts WHERE user_id=?";
 
     try (Connection connection = ConnectionToDB.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(statement)) {
@@ -109,11 +109,12 @@ public class CartDAO {
   }
 
   public static Cart findOpenCartByUser(Integer userId){
-    String statement = "SELECT * FROM carts WHERE closed=0 AND user_id=?";
+    String statement = "SELECT * FROM carts WHERE closed='0' AND user_id=?";
 
     try (Connection connection = ConnectionToDB.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(statement)) {
 
+      //preparedStatement.setBoolean(1, false);
       preparedStatement.setInt(1, userId);
 
       ResultSet resultSet = preparedStatement.executeQuery();
@@ -133,9 +134,9 @@ public class CartDAO {
     Cart cart = new Cart();
 
     cart.setId(resultSet.getInt("id"));
-    cart.setCreationTime(resultSet.getLong("creationTime"));
+    cart.setCreationTime(resultSet.getLong("creation_time"));
     cart.setClosed(resultSet.getBoolean("closed"));
-    cart.setUserId(resultSet.getInt("userId"));
+    cart.setUserId(resultSet.getInt("user_id"));
 
     return cart;
   }
