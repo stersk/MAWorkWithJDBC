@@ -1,6 +1,7 @@
 package com.mainacad.dao;
 
 import com.mainacad.model.Order;
+import com.mainacad.model.User;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class OrderDAO {
   }
 
   public static Order update(Order order) {
-    String statement = "UPDATE order SET cart_id=?, item_id=?, amount=? WHERE id=?";
+    String statement = "UPDATE orders SET cart_id=?, item_id=?, amount=? WHERE id=?";
 
     try (Connection connection = ConnectionToDB.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(statement)) {
@@ -108,13 +109,13 @@ public class OrderDAO {
     return orderList;
   }
 
-  public static void delete(Integer id){
+  public static void delete(Order order){
     String statement = "DELETE FROM orders WHERE id=?";
 
     try (Connection connection = ConnectionToDB.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(statement)) {
 
-      preparedStatement.setInt(1, id);
+      preparedStatement.setInt(1, order.getId());
       preparedStatement.executeUpdate();
 
     } catch (SQLException e) {
@@ -122,13 +123,14 @@ public class OrderDAO {
     }
   }
 
-  public static List<Order> findClosedOrdersByUserAndPeriod(Integer userId, Long from, Long to) {
+  public static List<Order> findClosedOrdersByUserAndPeriod(User user, Long from, Long to) {
     List<Order> orderList = new ArrayList<>();
 
     String statement = "SELECT o.id, o.item_id, o.amount, o.cart_id FROM orders o " +
             "JOIN carts c ON o.cart_id=c.id " +
             "WHERE " +
             "c.user_id=? AND " +
+            "c.closed='1' AND " +
             "c.creation_time>=? AND " +
             "c.creation_time<=? " +
             "ORDER BY c.creation_time";;
@@ -136,7 +138,7 @@ public class OrderDAO {
     try (Connection connection = ConnectionToDB.getConnection();
          PreparedStatement preparedStatement = connection.prepareStatement(statement)) {
 
-      preparedStatement.setInt(1, userId);
+      preparedStatement.setInt(1, user.getId());
       preparedStatement.setLong(2, from);
       preparedStatement.setLong(3, to);
 

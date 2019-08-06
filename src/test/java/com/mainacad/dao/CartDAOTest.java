@@ -30,7 +30,6 @@ class CartDAOTest {
 
   @AfterAll
   static void tearDown() {
-
     for (Cart cart: carts) {
       cart = CartDAO.findById(cart.getId());
       if (!cart.getClosed()) {
@@ -42,7 +41,7 @@ class CartDAOTest {
 
   @Test
   void testCreateFindAndDelete() {
-    // checking update
+    // checking create
     Cart cart = CartDAO.create(carts.get(0));
     assertNotNull(cart, "Creation method return null object");
     assertNotNull(cart.getId(), "Object id is null. Creation method must update id field of Cart object.");
@@ -93,6 +92,9 @@ class CartDAOTest {
     cart.setCreationTime(NEW_CREATION_TIME);
     Cart checkedCart = CartDAO.update(cart);
     assertNotNull(cart, "Update method return null object");
+    assertEquals(NEW_CREATION_TIME, checkedCart.getCreationTime());
+
+    checkedCart = CartDAO.findById(checkedCart.getId());
     assertEquals(NEW_CREATION_TIME, checkedCart.getCreationTime());
   }
 }
