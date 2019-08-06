@@ -8,6 +8,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ItemDAOTest {
 
   private static List<Item> items = new ArrayList<>();
@@ -30,7 +31,8 @@ class ItemDAOTest {
   }
 
   @Test
-  void testCreateFindAndDelete() {
+  @Order(1)
+  void testCreateFind() {
     // checking update
     assertNull(items.get(0).getId());
     Item createdItem = ItemDAO.create(items.get(0));
@@ -41,16 +43,13 @@ class ItemDAOTest {
     Item checkedItem = ItemDAO.findById(createdItem.getId());
     assertNotNull(checkedItem);
     assertNotNull(checkedItem.getId());
-
-    // another tests
-    testUpdate(checkedItem);
-    testFindByItemCode(createdItem, checkedItem);
-    testFindItemByPriceBetween(createdItem);
-    testFindAll();
-    сheckingDelete(createdItem, checkedItem);
   }
 
-  private void testUpdate(Item checkedItem) {
+  @Test
+  @Order(2)
+  void testUpdate() {
+    Item checkedItem = items.get(0);
+
     checkedItem.setPrice(TEST_NEW_PRICE);
     checkedItem = ItemDAO.update(checkedItem);
 
@@ -62,11 +61,15 @@ class ItemDAOTest {
     assertEquals(TEST_NEW_PRICE, checkedItemFromDB.getPrice());
   }
 
-  private void testFindByItemCode(Item createdItem, Item checkedItem) {
+  @Test
+  @Order(2)
+  void testFindByItemCode() {
+    Item createdItem = items.get(0);
+
     List<Item> checkedItems = ItemDAO.findByItemCode(TEST_ITEM_CODE);
     assertNotNull(checkedItems);
 
-    checkedItem = null;
+    Item checkedItem = null;
     for (int i = 0; i < checkedItems.size(); i++) {
       if (checkedItems.get(i).getId() == createdItem.getId()) {
         checkedItem = checkedItems.get(i);
@@ -76,8 +79,12 @@ class ItemDAOTest {
     assertNotNull(checkedItem, "Item not found by code");
   }
 
-  private void testFindItemByPriceBetween(Item createdItem) {
-    List<Item> checkedItems = ItemDAO.findByItemPriceBetween(TEST_NEW_PRICE - 100, TEST_NEW_PRICE + 100);
+  @Test
+  @Order(2)
+  void testFindItemByPriceBetween() {
+    Item createdItem = items.get(0);
+
+    List<Item> checkedItems = ItemDAO.findByItemPriceBetween(createdItem.getPrice() - 100, createdItem.getPrice() + 100);
     assertNotNull(checkedItems);
 
     Item checkedItem = null;
@@ -89,7 +96,7 @@ class ItemDAOTest {
 
     assertNotNull(checkedItem, "Item not found by price, but should");
 
-    checkedItems = ItemDAO.findByItemPriceBetween(TEST_NEW_PRICE + 100, TEST_NEW_PRICE + 200);
+    checkedItems = ItemDAO.findByItemPriceBetween(createdItem.getPrice() + 100, createdItem.getPrice() + 200);
     assertNotNull(checkedItem);
 
     checkedItem = null;
@@ -102,7 +109,9 @@ class ItemDAOTest {
     assertNull(checkedItem, "Item found by price, but should not");
   }
 
-  private void testFindAll() {
+  @Test
+  @Order(2)
+  void testFindAll() {
     List<Item> checkedItems = ItemDAO.findAll();
 
     assertNotNull(checkedItems);
@@ -112,10 +121,13 @@ class ItemDAOTest {
     }
   }
 
-  private void сheckingDelete(Item createdItem, Item checkedItem) {
+  @Test
+  @Order(3)
+  void testDelete() {
+    Item checkedItem = items.get(0);
     ItemDAO.delete(checkedItem);
 
-    Item deletedItem = ItemDAO.findById(createdItem.getId());
+    Item deletedItem = ItemDAO.findById(checkedItem.getId());
     assertNull(deletedItem);
   }
 }

@@ -9,6 +9,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class CartDAOTest {
   private static List<Cart> carts = new ArrayList<>();
   private static final Long NEW_CREATION_TIME = 1565024869119L;
@@ -30,7 +31,6 @@ class CartDAOTest {
 
   @AfterAll
   static void tearDown() {
-
     for (Cart cart: carts) {
       cart = CartDAO.findById(cart.getId());
       if (!cart.getClosed()) {
@@ -41,8 +41,9 @@ class CartDAOTest {
   }
 
   @Test
-  void testCreateFindAndDelete() {
-    // checking update
+  @Order(1)
+  void testCreateFind() {
+    // checking create
     Cart cart = CartDAO.create(carts.get(0));
     assertNotNull(cart, "Creation method return null object");
     assertNotNull(cart.getId(), "Object id is null. Creation method must update id field of Cart object.");
@@ -50,14 +51,13 @@ class CartDAOTest {
     // checking findById
     Cart checkedCart = CartDAO.findById(cart.getId());
     assertNotNull(checkedCart, "Cart not found, but it should");
-
-    // another tests
-    testUpdate(checkedCart);
-    testFindByUser(checkedCart);
-    testFindOpenCartByUser(checkedCart);
   }
 
-  private void testFindOpenCartByUser(Cart cart) {
+  @Test
+  @Order(2)
+  void testFindOpenCartByUser() {
+    Cart cart = carts.get(0);
+
     Cart checkedCart = CartDAO.findOpenCartByUser(cart.getUserId());
     assertNotNull(checkedCart, "findOpenCartByUser method return null object");
 
@@ -73,7 +73,11 @@ class CartDAOTest {
     }
   }
 
-  private void testFindByUser(Cart cart) {
+  @Test
+  @Order(2)
+  void testFindByUser() {
+    Cart cart = carts.get(0);
+
     List<Cart> checkedCartList = CartDAO.findByUser(cart.getUserId());
     assertNotNull(checkedCartList, "findByUser method return null object");
 
@@ -89,10 +93,17 @@ class CartDAOTest {
     assertNotNull(cartForCheck, "Test cart not found, but it should");
   }
 
-  private void testUpdate(Cart cart) {
+  @Test
+  @Order(2)
+  void testUpdate() {
+    Cart cart = carts.get(0);
+
     cart.setCreationTime(NEW_CREATION_TIME);
     Cart checkedCart = CartDAO.update(cart);
     assertNotNull(cart, "Update method return null object");
+    assertEquals(NEW_CREATION_TIME, checkedCart.getCreationTime());
+
+    checkedCart = CartDAO.findById(checkedCart.getId());
     assertEquals(NEW_CREATION_TIME, checkedCart.getCreationTime());
   }
 }

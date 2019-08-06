@@ -9,6 +9,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UserDAOTest {
   private static List<User> users = new ArrayList<>();
   private static String TEST_USER_LOGIN = "test_user";
@@ -29,7 +30,8 @@ class UserDAOTest {
   }
 
   @Test
-  void testCreateFindAndDelete() {
+  @Order(1)
+  void testCreateFind() {
     // test create
     assertNull(users.get(0).getId());
     User createdUser = UserDAO.create(users.get(0));
@@ -42,13 +44,16 @@ class UserDAOTest {
     assertNotNull(checkedUser.getId());
 
     // another tests
-    testUpdate(checkedUser);
+/*    testUpdate(checkedUser);
     testFindUserByLogin(createdUser);
     testFindAll();
-    testDelete(createdUser, checkedUser);
+    testDelete(createdUser, checkedUser);*/
   }
 
-  private void testUpdate(User checkedUser) {
+  @Test
+  @Order(2)
+  void testUpdate() {
+    User checkedUser = users.get(0);
     checkedUser.setPassword("new_password");
     checkedUser = UserDAO.update(checkedUser);
 
@@ -57,7 +62,10 @@ class UserDAOTest {
     assertEquals("new_password", checkedUserFromDB.getPassword());
   }
 
-  private void testFindUserByLogin(User createdUser) {
+  @Test
+  @Order(2)
+  void testFindUserByLogin() {
+    User createdUser = users.get(0);
     List<User> checkedUsers = UserDAO.findByLogin(TEST_USER_LOGIN);
     assertNotNull(checkedUsers);
 
@@ -71,7 +79,9 @@ class UserDAOTest {
     assertNotNull(checkedUser, "User not found by login");
   }
 
-  private void testFindAll() {
+  @Test
+  @Order(2)
+  void testFindAll() {
     List<User> checkedUsers = UserDAO.findAll();
 
     assertNotNull(checkedUsers);
@@ -81,10 +91,13 @@ class UserDAOTest {
     }
   }
 
-  private void testDelete(User createdUser, User checkedUser) {
+  @Test
+  @Order(3)
+  void testDelete() {
+    User checkedUser = users.get(0);
     UserDAO.delete(checkedUser);
 
-    User deletedUser = UserDAO.findById(createdUser.getId());
+    User deletedUser = UserDAO.findById(checkedUser.getId());
     assertNull(deletedUser, "User delete failed");
   }
 }

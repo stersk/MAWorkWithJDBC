@@ -5,7 +5,7 @@
 -- Dumped from database version 11.4
 -- Dumped by pg_dump version 11.4
 
--- Started on 2019-07-31 20:54:00
+-- Started on 2019-08-06 12:02:25
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -246,6 +246,18 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 --
 
 INSERT INTO public.carts (id, creation_time, closed, user_id) VALUES (3, 234234230000, true, 1);
+INSERT INTO public.carts (id, creation_time, closed, user_id) VALUES (5, 1565024867119, false, 21);
+INSERT INTO public.carts (id, creation_time, closed, user_id) VALUES (6, 1565024869119, true, 22);
+INSERT INTO public.carts (id, creation_time, closed, user_id) VALUES (7, 1565024869119, false, 23);
+INSERT INTO public.carts (id, creation_time, closed, user_id) VALUES (8, 1565024869119, true, 24);
+INSERT INTO public.carts (id, creation_time, closed, user_id) VALUES (9, 1565024867119, false, 25);
+INSERT INTO public.carts (id, creation_time, closed, user_id) VALUES (10, 1565024869119, true, 26);
+INSERT INTO public.carts (id, creation_time, closed, user_id) VALUES (11, 1565024869119, false, 27);
+INSERT INTO public.carts (id, creation_time, closed, user_id) VALUES (12, 1565024869119, true, 28);
+INSERT INTO public.carts (id, creation_time, closed, user_id) VALUES (13, 1565024869119, true, 29);
+INSERT INTO public.carts (id, creation_time, closed, user_id) VALUES (14, 1565024869119, true, 20);
+INSERT INTO public.carts (id, creation_time, closed, user_id) VALUES (4, 1565024867119, true, 20);
+INSERT INTO public.carts (id, creation_time, closed, user_id) VALUES (15, 1565024869119, true, 20);
 
 
 --
@@ -255,7 +267,6 @@ INSERT INTO public.carts (id, creation_time, closed, user_id) VALUES (3, 2342342
 --
 
 INSERT INTO public.items (id, item_code, name, price) VALUES (1, '455534345', 'Сигарети "Malboro"', 2300);
-INSERT INTO public.items (id, item_code, name, price) VALUES (8, 'qwerty12345', 'Kellys Spider 40 (2014)', 1450000);
 
 
 --
@@ -274,6 +285,16 @@ INSERT INTO public.items (id, item_code, name, price) VALUES (8, 'qwerty12345', 
 
 INSERT INTO public.users (id, login, password, first_name, second_name) VALUES (1, 'sters', '12345', 'sters', 'rych');
 INSERT INTO public.users (id, login, password, first_name, second_name) VALUES (16, 'test_user', 'test_pass', 'test_name', 'test_surname');
+INSERT INTO public.users (id, login, password, first_name, second_name) VALUES (20, 'user_login', 'test_pass', 'test_name', 'test_surname');
+INSERT INTO public.users (id, login, password, first_name, second_name) VALUES (21, 'user_login', 'test_pass', 'test_name', 'test_surname');
+INSERT INTO public.users (id, login, password, first_name, second_name) VALUES (22, 'user_login', 'test_pass', 'test_name', 'test_surname');
+INSERT INTO public.users (id, login, password, first_name, second_name) VALUES (23, 'user_login', 'test_pass', 'test_name', 'test_surname');
+INSERT INTO public.users (id, login, password, first_name, second_name) VALUES (24, 'user_login', 'test_pass', 'test_name', 'test_surname');
+INSERT INTO public.users (id, login, password, first_name, second_name) VALUES (25, 'user_login', 'test_pass', 'test_name', 'test_surname');
+INSERT INTO public.users (id, login, password, first_name, second_name) VALUES (26, 'user_login', 'test_pass', 'test_name', 'test_surname');
+INSERT INTO public.users (id, login, password, first_name, second_name) VALUES (27, 'user_login', 'test_pass', 'test_name', 'test_surname');
+INSERT INTO public.users (id, login, password, first_name, second_name) VALUES (28, 'user_login', 'test_pass', 'test_name', 'test_surname');
+INSERT INTO public.users (id, login, password, first_name, second_name) VALUES (29, 'user_login', 'test_pass', 'test_name', 'test_surname');
 
 
 --
@@ -282,7 +303,7 @@ INSERT INTO public.users (id, login, password, first_name, second_name) VALUES (
 -- Name: carts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.carts_id_seq', 3, true);
+SELECT pg_catalog.setval('public.carts_id_seq', 15, true);
 
 
 --
@@ -291,7 +312,7 @@ SELECT pg_catalog.setval('public.carts_id_seq', 3, true);
 -- Name: items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.items_id_seq', 8, true);
+SELECT pg_catalog.setval('public.items_id_seq', 13, true);
 
 
 --
@@ -300,7 +321,7 @@ SELECT pg_catalog.setval('public.items_id_seq', 8, true);
 -- Name: orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.orders_id_seq', 1, true);
+SELECT pg_catalog.setval('public.orders_id_seq', 10, true);
 
 
 --
@@ -309,7 +330,7 @@ SELECT pg_catalog.setval('public.orders_id_seq', 1, true);
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 19, true);
+SELECT pg_catalog.setval('public.users_id_seq', 29, true);
 
 
 --
@@ -375,7 +396,7 @@ ALTER TABLE ONLY public.orders
     ADD CONSTRAINT orders_items_fk FOREIGN KEY (item_id) REFERENCES public.items(id);
 
 
--- Completed on 2019-07-31 20:54:00
+-- Completed on 2019-08-06 12:02:26
 
 --
 -- PostgreSQL database dump complete
