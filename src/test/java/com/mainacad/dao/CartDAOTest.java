@@ -12,18 +12,14 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class CartDAOTest {
   private static List<Cart> carts = new ArrayList<>();
+  private static List<User> users = new ArrayList<>();
   private static final Long NEW_CREATION_TIME = 1565024869119L;
 
   @BeforeAll
   static void setUp() {
-    User user = null;
-    List<User> listUsers = UserDAO.findByLogin("user_login");
-    if (listUsers.isEmpty()) {
-      user = new User("user_login", "test_pass", "test_name", "test_surname");
-      user = UserDAO.create(user);
-    } else {
-      user = listUsers.get(0);
-    }
+    User user = new User("user_login", "test_pass", "test_name", "test_surname");
+    user = UserDAO.create(user);
+    users.add(user);
 
     Cart cart = new Cart(1565024867119L, false, user.getId());
     carts.add(cart);
@@ -32,11 +28,11 @@ class CartDAOTest {
   @AfterAll
   static void tearDown() {
     for (Cart cart: carts) {
-      cart = CartDAO.findById(cart.getId());
-      if (!cart.getClosed()) {
-        cart.setClosed(true);
-        CartDAO.update(cart);
-      }
+      CartDAO.delete(cart);
+    }
+
+    for (User user: users) {
+      UserDAO.delete(user);
     }
   }
 
@@ -105,5 +101,15 @@ class CartDAOTest {
 
     checkedCart = CartDAO.findById(checkedCart.getId());
     assertEquals(NEW_CREATION_TIME, checkedCart.getCreationTime());
+  }
+
+  @Test
+  @Order(3)
+  void testDelete() {
+    Cart cart = carts.get(0);
+    CartDAO.delete(cart);
+
+    Cart checkedCart = CartDAO.findById(cart.getId());
+    assertNull(checkedCart, "Cart not deleted from DB");
   }
 }

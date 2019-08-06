@@ -22,40 +22,18 @@ class OrderDAOTest {
   @BeforeAll
   static void setUp() {
     // crete test item
-    Item item = null;
-    List<Item> itemList = ItemDAO.findByItemCode("test_item");
-    if (itemList.isEmpty()) {
-      item = new Item("test_item", "Test item", 20000);
-      item = ItemDAO.create(item);
-    } else {
-      item = itemList.get(0);
-    }
+    Item item = new Item("test_item", "Test item", 20000);
+    item = ItemDAO.create(item);
     items.add(item);
 
     // create test user
-    User user = null;
-    List<User> listUsers = UserDAO.findByLogin("user_login");
-    if (listUsers.isEmpty()) {
-      user = new User("user_login", "test_pass", "test_name", "test_surname");
-      user = UserDAO.create(user);
-    } else {
-      user = listUsers.get(0);
-    }
+    User user = new User("user_login", "test_pass", "test_name", "test_surname");
+    user = UserDAO.create(user);
     users.add(user);
 
     // create test cart
-    Cart cart = null;
-    List<Cart> cartList = CartDAO.findByUser(user.getId());
-    if (cartList.isEmpty()) {
-      cart = new Cart(1565024867119L, false, user.getId());
-      cart = CartDAO.create(cart);
-    } else {
-      cart = cartList.get(0);
-      if (cart.getClosed()) {
-        cart.setClosed(false);
-        CartDAO.update(cart);
-      }
-    }
+    Cart cart = new Cart(1565024867119L, false, user.getId());
+    cart = CartDAO.create(cart);
     carts.add(cart);
 
     Order order = new Order(item.getId(), 2, cart.getId());
@@ -65,8 +43,7 @@ class OrderDAOTest {
   @AfterAll
   static void tearDown() {
     for (Cart cart: carts) {
-      cart.setClosed(true);
-      CartDAO.update(cart);
+      CartDAO.delete(cart);
     }
 
     for (Order order: orders) {
@@ -75,6 +52,10 @@ class OrderDAOTest {
 
     for (Item item: items) {
       ItemDAO.delete(item);
+    }
+
+    for (User user: users) {
+      UserDAO.delete(user);
     }
   }
 

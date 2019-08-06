@@ -1,6 +1,7 @@
 package com.mainacad.dao;
 
 import com.mainacad.model.Cart;
+import com.mainacad.model.Item;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -128,6 +129,20 @@ public class CartDAO {
     }
 
     return null;
+  }
+
+  public static void delete(Cart cart){
+    String statement = "DELETE FROM carts WHERE id=?";
+
+    try (Connection connection = ConnectionToDB.getConnection();
+         PreparedStatement preparedStatement = connection.prepareStatement(statement)) {
+
+      preparedStatement.setInt(1, cart.getId());
+      preparedStatement.executeUpdate();
+
+    } catch (SQLException e) {
+      logger.severe(e.getMessage());
+    }
   }
 
   private static Cart getCartFromResultSetItem(ResultSet resultSet) throws SQLException {
